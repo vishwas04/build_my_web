@@ -1,0 +1,37 @@
+#in  {
+    background: none repeat scroll 0 0 #fcf26d;
+    border-color: #5f05dd #1927a9 #5f05dd #5f05dd;
+    border-radius: 5px 5px 5px 5px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 1px #333333;
+    color: #000000;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: large;
+    padding: 10px;
+    text-align: center;
+    width: 500px;
+    height: 30px;
+    position: fixed;
+    left: 300px;
+    top: 100px;
+  }
+
+  body
+  {
+      background: #c2e9a1;
+  }
+  div
+  {
+    position: fixed;
+    top: 200px;
+    left: 300px;
+    font-weight: bold;
+    font-size: 30px;
+    padding: 10px;
+    text-align: center;
+    background: none repeat scroll 0 0 #e08eeb;
+    border-color: #FFFFFF #327CB5 #327CB5 #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+  }
