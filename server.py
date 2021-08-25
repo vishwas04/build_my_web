@@ -38,8 +38,10 @@ def input():
             #if uploaded_file.filename != '':
             # frame = cv2.imdecode(uploaded_file)
             img = Image.fromarray(original_image, 'RGB')
+            uploaded_file.save("/Users/vishwas/Desktop/build_my_web/files/"+str(uploaded_file.filename))
             img.save("/Users/vishwas/Desktop/build_my_web/files/"+str(uploaded_file.filename))
             img.show()
+            # cv2.imshow(str(uploaded_file.filename),original_image)
         else:
             return redirect ("http://localhost:3000")
     if(c):
