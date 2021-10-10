@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request,jsonify,redirect,after_this_request,make_response,url_for
 import flask
-import cv2
+import cv2,json
 import numpy as np
 from PIL import ImageFile, Image
 import json
@@ -12,7 +12,7 @@ import sys
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import tensorflow as tf
-sys.path.insert(0, '/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/src')
+sys.path.insert(0, '/Users/vishwas/Desktop/build_my_web/segmentation/src')
 from infer import myfunc
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 AUTOTUNE = tf.data.AUTOTUNE
@@ -170,13 +170,12 @@ def decode_batch_predictions(pred):
 
 
 new_model = tf.keras.models.load_model('model_20.h5', custom_objects={'CTCLayer': CTCLayer})
-f,ids=load_images_from_folder("/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/src/result/")
-v_test=prepare_dataset(f, ids)
+
 prediction_model = keras.models.Model(
     new_model.get_layer(name="image").input, new_model.get_layer(name="dense2").output
 )
+r={}
 
-# import predict
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -192,18 +191,18 @@ def input():
         c=0
         if(len(request.files.getlist('file')) and uploaded_file):
             original_image = np.asarray(Image.open(uploaded_file))
-            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/data/test')
-            os.mkdir('/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/data/test')
-            cv2.imwrite("/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/data/test/"+str(uploaded_file.filename), original_image)
+            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/segmentation/data/test')
+            os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/data/test')
+            cv2.imwrite("/Users/vishwas/Desktop/build_my_web/segmentation/data/test/"+str(uploaded_file.filename), original_image)
             
             
-            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/src/result')
-            os.mkdir('/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/src/result')
-            parent_dir = '/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/src/result'
+            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
+            os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
+            parent_dir = '/Users/vishwas/Desktop/build_my_web/segmentation/src/result'
 
             # read and scale down image
-            x=os.listdir("/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/data/test")
-            img = cv2.pyrDown(cv2.imread("/Users/vishwas/Desktop/build_my_web/WordDetectorNN-master/data/test/"+x[0], cv2.IMREAD_UNCHANGED))
+            x=os.listdir("/Users/vishwas/Desktop/build_my_web/segmentation/data/test")
+            img = cv2.pyrDown(cv2.imread("/Users/vishwas/Desktop/build_my_web/segmentation/data/test/"+x[0], cv2.IMREAD_UNCHANGED))
 
             # threshold image
             ret, threshed_img = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY),127, 255, cv2.THRESH_BINARY)
@@ -238,15 +237,28 @@ def input():
                             os.mkdir(path)
                             cv2.imwrite(os.path.join(path,'rectangle.jpg'),cropped_img)
                             myfunc(dir_name)
+            f,ids=load_images_from_folder("/Users/vishwas/Desktop/build_my_web/segmentation/src/result/")
+            v_test=prepare_dataset(f, ids)
             # cv2.imshow("contours", img)
+            # r={}
             for batch in v_test.take(1):
                 batch_images = batch["image"]
                 preds = prediction_model.predict(batch_images)
                 pred_texts = decode_batch_predictions(preds)
-
+                
                 for i in range(len(batch["image"])):
-                    print(pred_texts[i],"     ",ids[i])
-            
+                    # print(r)
+                    # res = tuple(map(int, ids[i].split("/")[0][1:-1].split(',')))
+                    if(ids[i].split("/")[0] in r):
+                        r[ids[i].split("/")[0]].append([pred_texts[i],(int(ids[i].split("/")[1].split("_")[0]),int(ids[i].split("/")[1].split("_")[1]))])
+                    else:
+                        r[ids[i].split("/")[0]]=list()
+                        r[ids[i].split("/")[0]].append([pred_texts[i],(int(ids[i].split("/")[1].split("_")[0]),int(ids[i].split("/")[1].split("_")[1]))])
+            for i in r:
+                sd=sorted(r[i] , key=lambda k: [k[1][0], k[1][1]])
+                r[i]=sd
+            # gr=r.copy()
+            # print("r",r)
         else:
             return redirect ("http://localhost:3000")
     if(c):
@@ -255,10 +267,20 @@ def input():
     
 
 
-@app.route("/edit")
+@app.route("/edit",methods=["POST","GET"])
 def edit():
-    #mongo 10 take
-    return json
+    @after_this_request
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+    # jsonResp = {'jack': 4098, 'sape': 4139}
+    # r=gr.copy()
+    global r
+    json_dump = json.dumps(r)
+    print(json_dump)
+    r=dict()
+    return json_dump
 
 
 
@@ -327,8 +349,8 @@ if __name__ == "__main__":
             # frame = cv2.imdecode(uploaded_file)
             
 # img = Image.fromarray(original_image, 'RGB')
-            # uploaded_file.save("/Users/vishwas/Downloads/WordDetectorNN-master-2/data/test/"+str(uploaded_file.filename))
-            # img.save("/Users/vishwas/Downloads/WordDetectorNN-master-2/data/test/"+str(uploaded_file.filename))
+            # uploaded_file.save("/Users/vishwas/Downloads/segmentation-2/data/test/"+str(uploaded_file.filename))
+            # img.save("/Users/vishwas/Downloads/segmentation-2/data/test/"+str(uploaded_file.filename))
             # img.show()
             # image = cv2.imread("/Users/vishwas/Desktop/segment0.png")
             # print(type(original_image),type(image))

@@ -102,7 +102,7 @@ def load_images_from_folder(folder):
 #             ii=ii+1
    
     return file,ids
-f,ids=load_images_from_folder("/Users/vishwas/Desktop/whatsapp/WordDetectorNN-master/src/result/")
+f,ids=load_images_from_folder("/Users/vishwas/Desktop/whatsapp/segmentation/src/result/")
 # print(f,ids)
 
 batch_size = 64
