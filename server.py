@@ -15,6 +15,9 @@ import tensorflow as tf
 sys.path.insert(0, '/Users/vishwas/Desktop/build_my_web/segmentation/src')
 from infer import myfunc
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+from spellchecker import SpellChecker
+spell = SpellChecker()
+p=["navbar","sidebar","endbar","image","slideshow"]
 AUTOTUNE = tf.data.AUTOTUNE
 max_len = 21
 characters=['i', 'K', '/', 'T', 'z', 'a', ')', '+', 'D', 'n', '#', '3', 'd', 'S', '6', 's', 'h', 'p', 'W', ':', 'k', 'I', 'w', 'y', '!', 'H', 'R', 'q', 'o', '5', 'M', 'l', '8', '&', 'Y', 'L', 'P', '?', 'N', 'O', ',', 'v', '-', 'c', ';', 'C', 'G', '1', 'g', 'e', 'J', 'u', 'r', '"', 'j', '0', 'E', 'F', 'x', 'b', 'V', 'm', 'X', '.', 'Z', '7', 't', '*', '2', 'U', 'B', "'", 'Q', '4', 'f', '(', 'A', '9']
@@ -24,6 +27,33 @@ char_to_num = StringLookup(vocabulary=characters, mask_token=None)
 # Mapping integers back to original characters.
 num_to_char = StringLookup(vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True)
 
+def per(a,b):
+    r="text"
+    p=0
+    for o in a:
+        if(len(o)<=len(b)):
+            off=len(b)-len(o)+1
+            for i in range(off):
+                c=0
+                for match in range(len(o)):
+                    if(o[match]==b[i+match]):
+                        c=c+1
+                if(c/len(o)>p and c>=2):
+                    p=c/len(o)
+                    r=o
+        else:
+            off=len(o)-len(b)+1
+            for i in range(off):
+                c=0
+                for match in range(len(b)):
+                    if(o[i+match]==b[match]):
+                        c=c+1
+                if(c/len(o)>p and c>=2):
+                    p=c/len(o)
+                    r=o
+
+        
+    return (r,p)
 
 
 
@@ -50,7 +80,7 @@ class CTCLayer(keras.layers.Layer):
 
 
 def distortion_free_resize(image, img_size):
-    print(image)
+    # print(image)
     w, h = img_size
     image  = tf.image.resize(image, size=(h, w), preserve_aspect_ratio=True)
 
@@ -236,26 +266,38 @@ def input():
                             path = os.path.join(parent_dir,dir_name)
                             os.mkdir(path)
                             cv2.imwrite(os.path.join(path,'rectangle.jpg'),cropped_img)
-                            myfunc(dir_name)
+                            myfunc(dir_name)#segmentation
             f,ids=load_images_from_folder("/Users/vishwas/Desktop/build_my_web/segmentation/src/result/")
             v_test=prepare_dataset(f, ids)
             # cv2.imshow("contours", img)
             # r={}
+            mapp={}
             for batch in v_test.take(1):
                 batch_images = batch["image"]
-                preds = prediction_model.predict(batch_images)
+                preds = prediction_model.predict(batch_images)#req
                 pred_texts = decode_batch_predictions(preds)
                 
                 for i in range(len(batch["image"])):
-                    # print(r)
-                    # res = tuple(map(int, ids[i].split("/")[0][1:-1].split(',')))
-                    if(ids[i].split("/")[0] in r):
-                        r[ids[i].split("/")[0]].append([pred_texts[i],(int(ids[i].split("/")[1].split("_")[0]),int(ids[i].split("/")[1].split("_")[1]))])
+                    cord=ids[i].split("/")[0]
+                    if(cord in r):
+                        # sx=spell.correction(pred_texts[i])
+                        r[cord].append([pred_texts[i],(int(ids[i].split("/")[1].split("_")[0]),int(ids[i].split("/")[1].split("_")[1]))])
                     else:
-                        r[ids[i].split("/")[0]]=list()
+                        r[cord]=list()
                         r[ids[i].split("/")[0]].append([pred_texts[i],(int(ids[i].split("/")[1].split("_")[0]),int(ids[i].split("/")[1].split("_")[1]))])
             for i in r:
                 sd=sorted(r[i] , key=lambda k: [k[1][0], k[1][1]])
+                z1=per(p,sd[0][0])
+                sx=spell.correction(sd[0][0])
+                z2=per(p,sx)
+                k=z1[0]
+                # print("k",sd[0][0],k,z1,z2)
+                if(z2[1]>z1[1]):
+                    k=z2[0] 
+                sd[0][0]=k
+                for d in range(1,len(sd)):
+                    # print("v",spell.correction(sd[d][0]),sd[d][0])
+                    sd[d][0]=spell.correction(sd[d][0])
                 r[i]=sd
             # gr=r.copy()
             # print("r",r)
@@ -278,7 +320,7 @@ def edit():
     # r=gr.copy()
     global r
     json_dump = json.dumps(r)
-    print(json_dump)
+    # print(json_dump)
     r=dict()
     return json_dump
 

@@ -28,14 +28,14 @@ for c in contours:
                 flag = False
         if(flag):
             if(w>30 and h>30 and w<700 and  h<700 and (w*h > 3000)):
-                print((x,y))
+                # print((x,y))
                 l.append((x,y))
                 #print(x,y)
                 #draw a green rectangle to visualize the bounding rect
                 cv2.rectangle(img, (x+6, y+6), (x+w-6, y+h-6), (0, 255, 0), 2)
                 #cv2.imshow("contours", img)
 
-print(len(contours))
+# print(len(contours))
 #cv2.drawContours(img, contours, -1, (255, 255, 0), 1)
 
 cv2.imshow("contours", img)

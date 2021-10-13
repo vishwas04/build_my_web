@@ -68,5 +68,5 @@ def sort_words(boxes):
         
     for line in lines:
         line.sort(key=lambda box: box[0])
-    print(lines)
+    # print(lines)
     return lines
