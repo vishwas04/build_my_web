@@ -262,7 +262,7 @@ def input():
                             #cv2.rectangle(img, (x+6, y+6), (x+w-6, y+h-6), (0, 255, 0), 2)
                             #cv2.imshow("contours", img)
                             cropped_img = img[y+5:y+h-5, x+5:x+w-5]
-                            dir_name = '('+str(x)+','+str(y)+','+str(x+w)+','+str(y+h)+')'
+                            dir_name = '('+str(x)+','+str(y)+','+str(w)+','+str(h)+')'
                             path = os.path.join(parent_dir,dir_name)
                             os.mkdir(path)
                             cv2.imwrite(os.path.join(path,'rectangle.jpg'),cropped_img)
@@ -322,6 +322,7 @@ def edit():
     json_dump = json.dumps(r)
     # print(json_dump)
     r=dict()
+    print(json_dump)
     return json_dump
 
 
