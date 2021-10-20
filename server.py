@@ -225,7 +225,8 @@ def input():
             os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/data/test')
             cv2.imwrite("/Users/vishwas/Desktop/build_my_web/segmentation/data/test/"+str(uploaded_file.filename), original_image)
             
-            
+            shape=list(original_image.shape)
+            print("shape",shape)
             shutil.rmtree('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
             os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
             parent_dir = '/Users/vishwas/Desktop/build_my_web/segmentation/src/result'
@@ -260,8 +261,11 @@ def input():
                             #print(x,y)
                             #draw a green rectangle to visualize the bounding rect
                             #cv2.rectangle(img, (x+6, y+6), (x+w-6, y+h-6), (0, 255, 0), 2)
-                            #cv2.imshow("contours", img)
                             cropped_img = img[y+5:y+h-5, x+5:x+w-5]
+                            #cv2.imshow("contours", img)
+                            
+
+                            
                             dir_name = '('+str(x)+','+str(y)+','+str(w)+','+str(h)+')'
                             path = os.path.join(parent_dir,dir_name)
                             os.mkdir(path)
