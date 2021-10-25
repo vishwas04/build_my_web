@@ -336,7 +336,6 @@ if __name__ == "__main__":
     app.run(debug=True,host='localhost', port=5000)
 
 
-
 # # @after_this_request
 #     # def add_header(response):
 #     #     response.headers.add('Access-Control-Allow-Origin', '*')
