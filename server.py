@@ -26,7 +26,9 @@ char_to_num = StringLookup(vocabulary=characters, mask_token=None)
 
 # Mapping integers back to original characters.
 num_to_char = StringLookup(vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True)
-
+# nav_state=[]
+# link
+# str1=" <li><a href="+lnav_state[0]+"#"+">"+nav_state[0]+"</a></li>"
 def per(a,b):
     r="text"
     p=0
