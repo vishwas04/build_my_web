@@ -314,8 +314,41 @@ def input():
     return redirect ("http://localhost:3000/edit")
     
 
+@app.route("/download",methods=["POST","GET"],endpoint='download')
+def download():
+    @after_this_request
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    r_final=str(request.data).split("!@#$%^&*()")
+    r_F=str(r_final)[2:-3]
+    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "r") as in_file:
+        buf = in_file.readlines()
+    in_file.close()
+    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "w") as out_file:
+        for line in buf:
+            if line == "        }}</script>\n":
+                line = line + r_final[0][2:]+"\n"
+            out_file.write(line)
+    out_file.close()
 
-@app.route("/edit",methods=["POST","GET"])
+    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "r") as in_file:
+        buf = in_file.readlines()
+    in_file.close()
+    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "w") as out_file:
+        for line in buf:
+            if line == "  <script>//////\n":
+                print("ccccccc")
+                line = line + r_final[1][:-1]+"\n"
+            out_file.write(line)
+    out_file.close()
+    # print("ddd",r_final[1][:-3],"ddd")
+    fr=
+    fr["r"]=1
+    jd = json.dumps(fr)
+    return  jd
+
+@app.route("/edit",methods=["POST","GET"],endpoint='edit')
 def edit():
     @after_this_request
     def add_header(response):

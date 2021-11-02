@@ -4,6 +4,7 @@ import axios from 'axios';
 import './edit.css';
 import { saveAs } from 'file-saver';
 import  { useState } from 'react';
+import fileDownload from 'js-file-download'
 class Edit extends React.Component {
 
     constructor(props) {
@@ -19,6 +20,7 @@ class Edit extends React.Component {
         this.text=this.text.bind(this);
         this.ustate=this.ustate.bind(this);
         this.showAlert=this.showAlert.bind(this);
+        this.handleDownload=this.handleDownload.bind(this);
         this.state={
             data:{},
             first:1,
@@ -127,6 +129,14 @@ class Edit extends React.Component {
                 this.text(d[i],i);          
         }
     }
+    handleDownload = (url, filename) => {
+        axios.get(url, {
+          responseType: 'blob',
+        })
+        .then((res) => {
+          fileDownload(res.data, filename)
+        })
+      }
     handleFileSelect(evt) {
         var files = evt.target.files;
         // var f = files[0];
@@ -1081,14 +1091,46 @@ class Edit extends React.Component {
                 final+= new_ss.outerHTML;
                 
             }
+
         //     if(all[i].id.indexOf("image")!== -1)
         //     {
         //         console.log(all[i])
         //     }
 
         }
+        final=final+"!@#$%^&*()var x="+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)
         console.log(final);
+           const url = 'http://localhost:5000/download';
+        fetch(url,{
+        method: 'POST',
+        body: final,
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' }
         
+        })
+        .then(response => response.json())  
+    .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
+        
+    console.log(j);
+        // j={"slideshow"}
+        // this.setState({ data: j }, () => 
+        // this.call());
+        // })
+    
+
+       
+    })
+        // .then(response => response.json())  
+        // .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
+        //     // var FileSaver = require('file-saver');
+        //     // var blob = new Blob([j.data], {type: "text/plain;charset=utf-8"});
+        //     // FileSaver.saveAs(blob, "a1.html");
+        //     // window.location.href="https://www.geeksforgeeks.org/how-to-deploy-a-basic-static-html-website-to-heroku/"
+        //     // j={"slideshow"}
+        //     // this.setState({ data: j }, () => 
+        //     // this.call());
+        //     console.log(j);
+        // });
 
   }
   
