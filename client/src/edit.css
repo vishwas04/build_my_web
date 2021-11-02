@@ -1,0 +1,36 @@
+#prev{
+    display:inline-block;
+    position: absolute;
+    width: 75%;
+    height: 1000px;
+    left:0px;
+    /* background-image: linear-gradient(#ff8a00, #ff74a7);
+background-image: linear-gradient(to right, violet, darkred, purple); */
+    background-image: linear-gradient(40deg, #f2ec4c 50%, #eaff00);
+
+}
+
+#edit{
+    position: fixed;
+    display:inline-block;
+    border: 5px;
+    border-color: black;
+    right: 0px;
+    width: 24.5%;
+    height: 90%;
+    /* background-color: rgba(194, 191, 255, 0); */
+    background-color: rgb(194, 191, 255);
+}
+input {
+    height: 50px;
+    width: 40%;
+  }
+
+#download{
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    width: 24.5%;
+    height: 10%;
+    background-color: rgb(131, 70, 255);
+}

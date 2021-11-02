@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    var x={"slideshow0":["https://pbs.twimg.com/profile_images/1411657008785227778/WcAsGFDU_400x400.jpg","/Users/vishwas/Desktop/Screenshot 2021-06-15 at 11.07.15 AM.png","https://play-lh.googleusercontent.com/xGN0ZdgAMy0P583EdSZMjn0oshWQDNza3WWjFSJgo2BxQViLKkPIwsDz9bDRHHzJSOs6","https://i.ytimg.com/vi/kP9TfCWaQT4/maxresdefault.jpg","https://play-lh.googleusercontent.com/xGN0ZdgAMy0P583EdSZMjn0oshWQDNza3WWjFSJgo2BxQViLKkPIwsDz9bDRHHzJSOs6"]}
+    var y = {"slideshow0":5};
+    var h_w ={}
+  </script>
+</head>
+<body style="height: 1000px;background-image: linear-gradient(40deg, #f2ec4c 50%, #eaff00); display:inline-block;">
+    <script>
+        window.onload =()=>
+        {
+        var c=0;
+        for (const [key, value] of Object.entries(x)) 
+        {
+            var h=document.getElementById(key).getBoundingClientRect().height-5;
+            var w=document.getElementById(key).getBoundingClientRect().width-5;
+            h_w[key]=[h,w];
+        
+        }
+        function foo (i,key)
+        {
+            console.log(i)
+            document.getElementById(i).onclick = ()=>{
+                if(y[key] > 1)
+                {
+                    w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;
+                    h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;
+                    
+                    y[key] =y[key]-1;
+                    if(document.getElementById("s_img"+key.toString()))
+                        document.getElementById("s_img"+key.toString()).remove();
+                    var s_img=document.createElement("img");
+                    s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;"
+                    s_img.id="s_img"+key.toString();
+                    s_img.src=x[key][y[key]-1];
+                    document.getElementById(key).appendChild(s_img);
+                }
+                else
+                {
+                    w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;
+                    h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;
+                    y[key] =x[key].length;
+                    if(document.getElementById("s_img"+key.toString()))
+                        document.getElementById("s_img"+key.toString()).remove();
+
+                    var s_img=document.createElement("img");
+                    s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;"
+                    s_img.id="s_img"+key.toString();
+                    s_img.src=x[key][y[key]-1];
+                    document.getElementById(key).appendChild(s_img);
+                }
+        
+            };
+        
+            
+        }
+        for (const [key, value] of Object.entries(x)) 
+        {
+            
+            h=h_w[key][0];
+            w=h_w[key][1];
+            var s_img=document.createElement("img");
+            s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;"
+            s_img.id="s_img"+key;
+            s_img.src=x[key][y[key]-1];
+            document.getElementById(key).append(s_img)
+    
+            var left = document.createElement("button");
+            left.innerHTML="<"
+            left.id = "slideshow_left"+(c).toString()
+            left.style.cssText="position:absolute;width:20px;height:"+h+"px;left:0px;border-radius: 8px;background-color: #F2994A;";
+            
+            document.getElementById(key).appendChild(left);
+            foo("slideshow_left"+(c).toString(),key);
+
+            var right = document.createElement("button");
+            right.innerHTML=">"
+            right.id = "slideshow_right"+(c).toString()
+            right.style.cssText="position:absolute;width:20px;height:"+h+"px;right:0px;border-radius: 8px;background-color: #F2994A;";
+            
+            document.getElementById(key).appendChild(right);
+            foo("slideshow_right"+(c).toString(),key);
+            
+            c=c+1;
+        }
+        
+    }
+        </script>
+<div id="slideshow0" style="position: absolute; top: 175px; left: 44px; height: 361px; border-style: groove; width: 1478.5px;"></div><div id="text0" style="position: absolute; top: 575px; left: 41px; height: 193px; width: 1469px;">text weite was whatd boy wooden despite raped build my wes </div><div id="final_nav" style="position: fixed; top: 0px; left: 0px; height: 99px; border-style: groove; overflow: hidden; width: 100%;"><a href="blank" style="color: inherit; text-decoration: none !important;"><div id="pnav0" style="position: absolute; height: 99px; background-color: rgb(242, 153, 74); text-align: center; padding-top: 39px; border-style: groove; width: 600px; left: 0px; vertical-align: middle;">Home</div></a><a href="blank" style="color: inherit; text-decoration: none !important;"><div id="pnav1" style="position: absolute; height: 99px; background-color: rgb(242, 153, 74); text-align: center; padding-top: 39px; border-style: groove; width: 600px; left: 600px; vertical-align: middle;">"</div></a><a href="blank" style="color: inherit; text-decoration: none !important;"><div id="pnav2" style="position: absolute; height: 99px; background-color: rgb(242, 153, 74); text-align: center; padding-top: 39px; border-style: groove; width: 600px; left: 1200px; vertical-align: middle;">ir</div></a></div><div id="final_end" style="position: absolute; left: 0px; height: 99px; border-style: groove; overflow: hidden; bottom: 0px; width: 100%; top: 990px;"><a href="blank" style="color: inherit; text-decoration: none !important;"><div id="pend0" style="position: absolute; height: 99px; background-color: rgb(242, 153, 74); text-align: center; border-style: groove; width: 900px; left: 0px; padding-top: 0px; vertical-align: middle; line-height: 90px;">farbosk</div></a><a href="blank" style="color: inherit; text-decoration: none !important;"><div id="pend1" style="position: absolute; height: 99px; background-color: rgb(242, 153, 74); text-align: center; border-style: groove; width: 900px; left: 900px; padding-top: 0px; vertical-align: middle; line-height: 90px;">pentagram</div></a></div>
+</body>
+</html>
