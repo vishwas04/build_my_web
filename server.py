@@ -343,7 +343,7 @@ def download():
             out_file.write(line)
     out_file.close()
     # print("ddd",r_final[1][:-3],"ddd")
-    fr=
+    fr=dict()
     fr["r"]=1
     jd = json.dumps(fr)
     return  jd
