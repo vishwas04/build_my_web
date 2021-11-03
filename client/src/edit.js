@@ -411,6 +411,10 @@ class Edit extends React.Component {
         // 3
         var disp = ()=>
         {
+            const myNode = document.getElementById("side");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.lastChild);
+        }
         var t = Math.floor(parseInt(pos[3])/(this.state.side_state.length))
         for (var i in this.state.side_state)
         {
@@ -592,6 +596,10 @@ class Edit extends React.Component {
         // 3
         var disp = ()=>
         {
+            const myNode = document.getElementById("end");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.lastChild);
+        }
         var t = Math.floor(parseInt(pos[2])/(this.state.end_state.length))
         console.log("t",t,this.state.end_state.length,pos[2])
         for (var i in this.state.end_state)
@@ -778,6 +786,10 @@ class Edit extends React.Component {
        // 3
        var disp = ()=>
        {
+        const myNode = document.getElementById("nav");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.lastChild);
+        }
        var t = Math.floor(parseInt(pos[2])/(this.state.nav_state.length))
        console.log("t",t,this.state.nav_state.length,pos[2])
        for (var i in this.state.nav_state)
@@ -1032,12 +1044,15 @@ class Edit extends React.Component {
                 final_slide.style.cssText=all[i].style.cssText;
                 console.log(this.state.lside_state)
                 var c=this.state.lside_state.length;
+                var final_inner_width= parseInt((all[i].getBoundingClientRect().width-5));
+                var final_inner_height= parseInt((all[i].getBoundingClientRect().height-5)/c);
                 for(var child=0; child<c; child++) 
                 {
                     var hd=document.getElementById("pside"+child.toString());
                     var l=document.createElement("a");
                     l.href=this.state.lside_state[child];
-                    l.style.cssText="color: inherit;text-decoration: none !important"
+                    l.style.cssText="color: inherit;text-decoration: none !important;height:"+final_inner_height.toString()+"px;width:"+final_inner_width.toString()+"px;top:"+(child*final_inner_height);
+                    hd.style.cssText+=";height:"+final_inner_height.toString()+"px;width:"+final_inner_width.toString()+"px;top:"+(child*final_inner_height);
                     hd.innerHTML=this.state.side_state[child];
                     // var final_side_new=document.createElement("div");
                     // final_side_new.style.cssText=hd.style
@@ -1098,28 +1113,35 @@ class Edit extends React.Component {
         //     }
 
         }
-        final=final+"!@#$%^&*()var x="+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)
+        final=final+"</body></html>";//+"!@#$%^&*()var x="+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)
         console.log(final);
-           const url = 'http://localhost:5000/download';
-        fetch(url,{
-        method: 'POST',
-        body: final,
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' }
+
+
+        var part1 ='<!DOCTYPE html><html lang="en"><head><script>\nvar x='+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)+"\n"
+        var part2='var h_w ={};</script></head><body style="height: 1000px;background-image: linear-gradient(40deg, #f2ec4c 50%, #eaff00); display:inline-block;"><script>window.onload =()=>{var c=0;for (const [key, value] of Object.entries(x)) {var h=document.getElementById(key).getBoundingClientRect().height-5;var w=document.getElementById(key).getBoundingClientRect().width-5;h_w[key]=[h,w];}function foo (i,key){document.getElementById(i).onclick = ()=>{if(y[key] > 1){w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =y[key]-1;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}else{w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =x[key].length;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}};}for (const [key, value] of Object.entries(x)) {h=h_w[key][0];w=h_w[key][1];var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key;s_img.src=x[key][y[key]-1];document.getElementById(key).append(s_img);var left = document.createElement("button");left.innerHTML="<";left.id = "slideshow_left"+(c).toString();left.style.cssText="position:absolute;width:20px;height:"+h+"px;left:0px;border-radius: 8px;background-color: #F2994A;";document.getElementById(key).appendChild(left);foo("slideshow_left"+(c).toString(),key);var right = document.createElement("button");right.innerHTML=">";right.id = "slideshow_right"+(c).toString();right.style.cssText="position:absolute;width:20px;height:"+h+"px;right:0px;border-radius: 8px;background-color: #F2994A;";document.getElementById(key).appendChild(right);foo("slideshow_right"+(c).toString(),key);c=c+1;}}</script>;'
+        var FileSaver = require('file-saver');
+        var blob = new Blob([part1+part2+final], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, "a1.html");
+    //        const url = 'http://localhost:5000/download';
+    //     fetch(url,{
+    //     method: 'POST',
+    //     body: final,
+    //     mode: 'no-cors',
+    //     headers: { 'Content-Type': 'application/json' }
         
-        })
-        .then(response => response.json())  
-    .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
+    //     })
+    //     .then(response => response.json())  
+    // .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
         
-    console.log(j);
-        // j={"slideshow"}
-        // this.setState({ data: j }, () => 
-        // this.call());
-        // })
+    // console.log(j);
+    //     // j={"slideshow"}
+    //     // this.setState({ data: j }, () => 
+    //     // this.call());
+    //     // })
     
 
        
-    })
+    // })
         // .then(response => response.json())  
         // .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
         //     // var FileSaver = require('file-saver');
