@@ -3,4 +3,4 @@
 
 # To
 
-![HTML FILE]("https://github.com/vishwas04/build_my_web/blob/main/a1-2.html")
+![HTML FILE]("/a1-2.html")
