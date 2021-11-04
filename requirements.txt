@@ -21,7 +21,6 @@ joblib==0.14.1
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
 matplotlib==3.0.3
-numpy==1.18.5
 opencv-python==4.4.0.42
 path==13.1.0
 path.py==12.5.0
