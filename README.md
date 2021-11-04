@@ -9,3 +9,6 @@
 
 # How it looks like
 <img src = "/output.png" />
+
+
+[MIT License]("MIT License")
