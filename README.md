@@ -11,4 +11,4 @@
 <img src = "/output.png" />
 
 
-[MIT License]("MIT License")
+[MIT License]("/MIT License")
