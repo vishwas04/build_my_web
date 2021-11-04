@@ -6,7 +6,7 @@ import os
 
 
 def visualize(img, aabbs,img_dir):
-    parent_dir = '/Users/vishwas/Desktop/build_my_web/segmentation/src/result/'
+    parent_dir = 'segmentation/src/result/'
     img = ((img + 0.5) * 255).astype(np.uint8)
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     boxes = []

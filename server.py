@@ -12,7 +12,7 @@ import sys
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import tensorflow as tf
-sys.path.insert(0, '/Users/vishwas/Desktop/build_my_web/segmentation/src')
+sys.path.insert(0, 'segmentation/src')
 from infer import myfunc
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from spellchecker import SpellChecker
@@ -223,19 +223,19 @@ def input():
         c=0
         if(len(request.files.getlist('file')) and uploaded_file):
             original_image = np.asarray(Image.open(uploaded_file))
-            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/segmentation/data/test')
-            os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/data/test')
-            cv2.imwrite("/Users/vishwas/Desktop/build_my_web/segmentation/data/test/"+str(uploaded_file.filename), original_image)
+            shutil.rmtree('segmentation/data/test')
+            os.mkdir('segmentation/data/test')
+            cv2.imwrite("segmentation/data/test/"+str(uploaded_file.filename), original_image)
             
             shape=list(original_image.shape)
             print("shape",shape)
-            shutil.rmtree('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
-            os.mkdir('/Users/vishwas/Desktop/build_my_web/segmentation/src/result')
-            parent_dir = '/Users/vishwas/Desktop/build_my_web/segmentation/src/result'
+            shutil.rmtree('segmentation/src/result')
+            os.mkdir('segmentation/src/result')
+            parent_dir = 'segmentation/src/result'
 
             # read and scale down image
-            x=os.listdir("/Users/vishwas/Desktop/build_my_web/segmentation/data/test")
-            img = cv2.pyrDown(cv2.imread("/Users/vishwas/Desktop/build_my_web/segmentation/data/test/"+x[0], cv2.IMREAD_UNCHANGED))
+            x=os.listdir("segmentation/data/test")
+            img = cv2.pyrDown(cv2.imread("segmentation/data/test/"+x[0], cv2.IMREAD_UNCHANGED))
 
             # threshold image
             ret, threshed_img = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY),127, 255, cv2.THRESH_BINARY)
@@ -273,7 +273,7 @@ def input():
                             os.mkdir(path)
                             cv2.imwrite(os.path.join(path,'rectangle.jpg'),cropped_img)
                             myfunc(dir_name)#segmentation
-            f,ids=load_images_from_folder("/Users/vishwas/Desktop/build_my_web/segmentation/src/result/")
+            f,ids=load_images_from_folder("segmentation/src/result/")
             v_test=prepare_dataset(f, ids)
             # cv2.imshow("contours", img)
             # r={}
@@ -322,20 +322,20 @@ def download():
         return response
     r_final=str(request.data).split("!@#$%^&*()")
     r_F=str(r_final)[2:-3]
-    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "r") as in_file:
+    with open("client/src/a.html", "r") as in_file:
         buf = in_file.readlines()
     in_file.close()
-    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "w") as out_file:
+    with open("client/src/a.html", "w") as out_file:
         for line in buf:
             if line == "        }}</script>\n":
                 line = line + r_final[0][2:]+"\n"
             out_file.write(line)
     out_file.close()
 
-    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "r") as in_file:
+    with open("client/src/a.html", "r") as in_file:
         buf = in_file.readlines()
     in_file.close()
-    with open("/Users/vishwas/Desktop/build_my_web/client/src/a.html", "w") as out_file:
+    with open("client/src/a.html", "w") as out_file:
         for line in buf:
             if line == "  <script>//////\n":
                 print("ccccccc")
@@ -379,10 +379,10 @@ if __name__ == "__main__":
 #         # f = request.files['img'] 
 #         # print("ooooo") 
 #         # i=request.files["file"]
-#         # i.save("/Users/vishwas/Desktop/build_my_web/files/"+request.form["pgno"]+".jpg")
+#         # i.save("files/"+request.form["pgno"]+".jpg")
 #         # resp = flask.Response.json({"name":"vade"})
 #         # resp.headers['Access-Control-Allow-Origin'] = '*'
-#         # f.save("/Users/vishwas/Desktop/build_my_web/files/"+str(f.filename))
+#         # f.save("files/"+str(f.filename))
 #         # return {"s":1}
 #     # for uploaded_file in request.files('file'):
 #     #     if(len(request.files.getlist('file'))):
@@ -390,7 +390,7 @@ if __name__ == "__main__":
 #     #         #if uploaded_file.filename != '':
 #     #         # frame = cv2.imdecode(uploaded_file)
 #     #         img = Image.fromarray(original_image, 'RGB')
-#     #         img.save("/Users/vishwas/Desktop/build_my_web/files/"+str(original_image.filename))
+#     #         img.save("files/"+str(original_image.filename))
 #     #         img.show()
 #             # response = uploaded_file.read()
 #     # file = request.files['file']
@@ -414,11 +414,11 @@ if __name__ == "__main__":
     # dis = Image.fromarray(img, 'RGB')
     # dis.show()
     # print("file")
-    # f.save("/Users/vishwas/Desktop/build_my_web/files/"+str(f.filename))
+    # f.save("files/"+str(f.filename))
     # response = file.read()
     # resp = jsonify(success=True)
     # img = Image.fromarray(f.read(), 'RGB')
-    # img.save("/Users/vishwas/Desktop/build_my_web/files/"+str(f.filename))
+    # img.save("files/"+str(f.filename))
     # img.show()
 
 

@@ -16,11 +16,11 @@ def myfunc(img_dir):
     args = parser.parse_args()
 
     net = WordDetectorNet()
-    net.load_state_dict(torch.load('/Users/vishwas/Desktop/build_my_web/segmentation/model/weights', map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load('segmentation/model/weights', map_location=torch.device('cpu')))
     net.eval()
     net.to(args.device)
 
-    loader = DataLoaderImgFile(Path('/Users/vishwas/Desktop/build_my_web/segmentation/src/result/'+img_dir), net.input_size, args.device)
+    loader = DataLoaderImgFile(Path('segmentation/src/result/'+img_dir), net.input_size, args.device)
     res = evaluate(net, loader, max_aabbs=1000)
 
     for i, (img, aabbs) in enumerate(zip(res.batch_imgs, res.batch_aabbs)):
