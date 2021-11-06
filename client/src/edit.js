@@ -54,7 +54,7 @@ class Edit extends React.Component {
     const url = 'http://localhost:5000/edit';
     fetch(url)
     .then(response => response.json())  
-    .then(j => { //j={"(17,361,353,49)": [["slideshow", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["slideshow", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["slideshow", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
+    .then(j => { j={"(17,361,353,49)": [["image", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["image", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["image", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
         
     console.log(j);
         // j={"slideshow"}
@@ -372,21 +372,38 @@ class Edit extends React.Component {
     image(d,p)
     {
         
-        var obj = document.createElement('div');
+        var obj = document.createElement('img');
         var pos= p.split("(")[1].split(")")[0].split(",");
         pos = this.resiz(pos);
         var pt = "position:absolute;top:"+pos[1]+"px;left:"+pos[0]+"px;width:"+pos[2]+"px;height:"+pos[3]+"px;border-style: groove;";
         obj.style.cssText = pt;
+        // Object.keys(this.state.data_img).length.toString()
+        obj.id="img"+Object.keys(this.state.data_img).length.toString()
+        this.state.data_img["img"+Object.keys(this.state.data_img).length.toString()]=""
         document.getElementById("prev").appendChild(obj);
         obj.onclick = ()=>
         {
-
             const myNode = document.getElementById("edit");
             while (myNode.firstChild) {
                 myNode.removeChild(myNode.lastChild);
             }
+            var x=document.createElement("input");
+            x.value=this.state.data_img[obj.id];
+            x.onchange = ()=>{this.state.data_img[obj.id]=x.value}
+            document.getElementById("edit").appendChild(x);
+            var ref_b = document.createElement('button');
+        ref_b.id = "e_b";
+        ref_b.innerHTML="SAVE changes"
+        
+        ref_b.onclick =  () =>
+        {
+            obj.src=this.state.data_img[obj.id];
+        }
+        document.getElementById("edit").appendChild(ref_b);
 
         }
+        
+
         
     }
     sidebar(d,p)
@@ -1107,10 +1124,12 @@ class Edit extends React.Component {
                 
             }
 
-        //     if(all[i].id.indexOf("image")!== -1)
-        //     {
-        //         console.log(all[i])
-        //     }
+            if(all[i].id.indexOf("img")!== -1)
+            {
+                all[i].style.cssText+=";width:"+(all[i].getBoundingClientRect().width+parseInt((all[i].getBoundingClientRect().width)*0.25)).toString()+"px;"
+                // console.log("text",all[i])
+                final+= all[i].outerHTML;
+            }
 
         }
         final=final+"</body></html>";//+"!@#$%^&*()var x="+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)
