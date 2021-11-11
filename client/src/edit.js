@@ -21,6 +21,7 @@ class Edit extends React.Component {
         this.ustate=this.ustate.bind(this);
         this.showAlert=this.showAlert.bind(this);
         this.handleDownload=this.handleDownload.bind(this);
+        this.colorpicker=this.colorpicker.bind(this);
         this.state={
             data:{},
             first:1,
@@ -54,16 +55,59 @@ class Edit extends React.Component {
     const url = 'http://localhost:5000/edit';
     fetch(url)
     .then(response => response.json())  
-    .then(j => { j={"(17,361,353,49)": [["image", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["image", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["image", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
+    .then(j => { //j={"(17,361,353,49)": [["endbar", [0, 0]], ["tine", [0, 1]], ["ine", [0, 2]], ["Lontadus", [0, 3]]], "(145,244,220,109)": [["image", [0, 0]], ["is", [0, 1]], ["sont", [0, 2]], ["Maim", [0, 3]], ["bat", [1, 0]], ["bat", [1, 1]], ["the", [1, 2]], ["maw", [1, 3]], ["thar", [2, 0]], ["gang", [2, 1]], ["to", [2, 2]], ["be", [2, 3]], ["third", [3, 0]]], "(140,90,229,149)": [["image", [0, 0]]], "(11,91,113,266)": [["sidebar", [0, 0]], ["rest", [1, 0]], ["calder", [2, 0]], ["peds", [3, 0]], ["beignet", [4, 0]], ["moment", [5, 0]]], "(9,4,362,72)": [["navbar", [0, 0]], ["Mome", [0, 1]], ["about", [0, 2]], ["logout", [0, 3]]]}
         
     console.log(j);
         // j={"slideshow"}
-        this.setState({ data: j }, () => 
-        this.call());
+        this.setState({ data: j }, () => {
+            this.colorpicker();
+            document.getElementById("prev").style.background="#f2ec4c";
+            this.call();
+        });
+        
         })
     
 
        
+    }
+    colorpicker()
+    {
+        var ci1=document.createElement("input")
+        ci1.type="color";
+        ci1.id="ci1"
+        ci1.value="#f2ec4c"
+        document.getElementById("download").appendChild(ci1);
+        ci1.onchange=(e)=>
+        {   
+            document.getElementById("prev").style.background=e.target.value;
+        }
+        var ci2=document.createElement("input")
+        ci2.type="color";
+        ci2.value="#F2994A"
+        ci2.id="ci2"
+        document.getElementById("download").appendChild(ci2);
+        ci2.onchange=(e)=>
+        {   
+            for (var i in this.state.side_state)
+            {
+                document.getElementById("pside"+i).style.background=e.target.value;
+            }
+            for (var i in this.state.nav_state)
+            {
+                document.getElementById("pnav"+i).style.background=e.target.value;
+            }
+            for (var i in this.state.end_state)
+            {
+                document.getElementById("pend"+i).style.background=e.target.value;
+            }
+            for (var i=0;i<Object.keys(this.state.data_ss).length;i++)
+            {
+                document.getElementById("slideshow_left"+i).style.background=e.target.value;
+                document.getElementById("slideshow_right"+i).style.background=e.target.value;
+            }
+
+        }
+        
     }
     ustate()
     {
@@ -106,6 +150,7 @@ class Edit extends React.Component {
     }
     call()
     {
+        document.getElementById("filename").value="filename"
         console.log("call");
         var s_show=[];
         var d=this.state.data;
@@ -439,7 +484,7 @@ class Edit extends React.Component {
             x.id="pside"+i.toString()
             obj.appendChild(x)
             var tt=Math.floor(parseInt(t)/2)-10;
-            x.style.cssText="position:absolute;width:"+side_inner_box_width+"px;top:"+((i)*t)+"px;height:"+t+"px;background-color:#F2994A;text-align: center;padding-top:"+tt+"px;border-style: groove;"
+            x.style.cssText="position:absolute;width:"+side_inner_box_width+"px;top:"+((i)*t)+"px;height:"+t+"px;background-color:"+document.getElementById("ci2").value+";text-align: center;padding-top:"+tt+"px;border-style: groove;"
             x.innerHTML=this.state.side_state[i]
          }
         }
@@ -625,7 +670,7 @@ class Edit extends React.Component {
             x.id="pend"+i.toString()
             obj.appendChild(x)
             var tt=Math.floor(h/2)-10
-            x.style.cssText="position:absolute;width:"+t+"px;left:"+((i)*t)+"px;height:"+h+"px;background-color:#F2994A;text-align: center;padding-top:"+tt+"px;border-style: groove;"
+            x.style.cssText="position:absolute;width:"+t+"px;left:"+((i)*t)+"px;height:"+h+"px;background-color:"+document.getElementById("ci2").value+";text-align: center;padding-top:"+tt+"px;border-style: groove;"
             x.innerHTML=this.state.end_state[i]
             
          }
@@ -816,7 +861,7 @@ class Edit extends React.Component {
            x.id="pnav"+i.toString()
            obj.appendChild(x)
            var tt=Math.floor(h/2)-10
-           x.style.cssText="position:absolute;width:"+t+"px;left:"+((i)*t)+"px;height:"+h+"px;background-color:#F2994A;text-align: center;padding-top:"+tt+"px;border-style: groove;"
+           x.style.cssText="position:absolute;width:"+t+"px;left:"+((i)*t)+"px;height:"+h+"px;background-color:"+document.getElementById("ci2").value+";text-align: center;padding-top:"+tt+"px;border-style: groove;"
            x.innerHTML=this.state.nav_state[i]
            console.log("x"+x.toString());
         }
@@ -1041,7 +1086,8 @@ class Edit extends React.Component {
                 var c=this.state.lnav_state.length;
                 for(var child=0; child<c; child++) 
                 {
-                    var hd=document.getElementById("pnav"+child.toString());
+                    var hd1=document.getElementById("pnav"+child.toString());
+                    var hd = hd1.cloneNode(true)
                     var l=document.createElement("a");
                     l.href=this.state.lnav_state[child];
                     hd.innerHTML=this.state.nav_state[child];
@@ -1065,7 +1111,8 @@ class Edit extends React.Component {
                 var final_inner_height= parseInt((all[i].getBoundingClientRect().height-5)/c);
                 for(var child=0; child<c; child++) 
                 {
-                    var hd=document.getElementById("pside"+child.toString());
+                    var hd1=document.getElementById("pside"+child.toString());
+                    var hd = hd1.cloneNode(true)
                     var l=document.createElement("a");
                     l.href=this.state.lside_state[child];
                     l.style.cssText="color: inherit;text-decoration: none !important;height:"+final_inner_height.toString()+"px;width:"+final_inner_width.toString()+"px;top:"+(child*final_inner_height);
@@ -1093,7 +1140,8 @@ class Edit extends React.Component {
                 var c=this.state.lend_state.length;
                 for(var child=0; child<c; child++) 
                 {
-                    var hd=document.getElementById("pend"+child.toString());
+                    var hd1=document.getElementById("pend"+child.toString());
+                    var hd = hd1.cloneNode(true)
                     var l=document.createElement("a");
                     l.href=this.state.lend_state[child];
                     hd.innerHTML=this.state.end_state[child];
@@ -1115,10 +1163,10 @@ class Edit extends React.Component {
             if(all[i].id.indexOf("slideshow")!== -1 && all[i].id.indexOf("left")=== -1 && all[i].id.indexOf("right")=== -1 && all[i].id.indexOf("s_img")=== -1)
             {
                 var new_ss= document.createElement("div");
-                all[i].style.cssText+=";width:"+(all[i].getBoundingClientRect().width+parseInt((all[i].getBoundingClientRect().width)*0.25)).toString()+"px;"
+                // all[i].style.cssText+=";width:"+(all[i].getBoundingClientRect().width+parseInt((all[i].getBoundingClientRect().width)*0.25)).toString()+"px;"
                 console.log("ss",all[i]);
                 // document.getElementById("s_img"+all[i].id).style.cssText+=";width:"+(document.getElementById("s_img"+all[i].id).getBoundingClientRect().width+parseInt((document.getElementById("s_img"+all[i].id).getBoundingClientRect().width)*0.25)).toString()+"px;";
-                new_ss.style.cssText=all[i].style.cssText;
+                new_ss.style.cssText=all[i].style.cssText+";width:"+(all[i].getBoundingClientRect().width+parseInt((all[i].getBoundingClientRect().width)*0.25)).toString()+"px;";
                 new_ss.id=all[i].id;
                 final+= new_ss.outerHTML;
                 
@@ -1136,11 +1184,16 @@ class Edit extends React.Component {
         console.log(final);
 
 
-        var part1 ='<!DOCTYPE html><html lang="en"><head><script>\nvar x='+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)+"\n"
-        var part2='var h_w ={};</script></head><body style="height: 1000px;background-image: linear-gradient(40deg, #f2ec4c 50%, #eaff00); display:inline-block;"><script>window.onload =()=>{var c=0;for (const [key, value] of Object.entries(x)) {var h=document.getElementById(key).getBoundingClientRect().height-5;var w=document.getElementById(key).getBoundingClientRect().width-5;h_w[key]=[h,w];}function foo (i,key){document.getElementById(i).onclick = ()=>{if(y[key] > 1){w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =y[key]-1;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}else{w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =x[key].length;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}};}for (const [key, value] of Object.entries(x)) {h=h_w[key][0];w=h_w[key][1];var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key;s_img.src=x[key][y[key]-1];document.getElementById(key).append(s_img);var left = document.createElement("button");left.innerHTML="<";left.id = "slideshow_left"+(c).toString();left.style.cssText="position:absolute;width:20px;height:"+h+"px;left:0px;border-radius: 8px;background-color: #F2994A;";document.getElementById(key).appendChild(left);foo("slideshow_left"+(c).toString(),key);var right = document.createElement("button");right.innerHTML=">";right.id = "slideshow_right"+(c).toString();right.style.cssText="position:absolute;width:20px;height:"+h+"px;right:0px;border-radius: 8px;background-color: #F2994A;";document.getElementById(key).appendChild(right);foo("slideshow_right"+(c).toString(),key);c=c+1;}}</script>;'
+        var part1 ='<!DOCTYPE html><html lang="en"><head><script>\nvar x='+JSON.stringify(this.state.data_ss)+";var y= "+JSON.stringify(this.state.pres_ss)+";var clr='"+document.getElementById("ci2").value+"';\n";
+        var part2= 'var h_w ={};</script></head><body style="height: 1000px;background: '+document.getElementById("prev").style.background+'; display:inline-block;"><script>window.onload =()=>{var c=0;for (const [key, value] of Object.entries(x)) {var h=document.getElementById(key).getBoundingClientRect().height-5;var w=document.getElementById(key).getBoundingClientRect().width-5;h_w[key]=[h,w];}function foo (i,key){document.getElementById(i).onclick = ()=>{if(y[key] > 1){w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =y[key]-1;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}else{w=document.getElementById(i).parentNode.getBoundingClientRect().width-5;h=document.getElementById(i).parentNode.getBoundingClientRect().height-5;y[key] =x[key].length;if(document.getElementById("s_img"+key.toString())){document.getElementById("s_img"+key.toString()).remove();}var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key.toString();s_img.src=x[key][y[key]-1];document.getElementById(key).appendChild(s_img);}};}for (const [key, value] of Object.entries(x)) {h=h_w[key][0];w=h_w[key][1];var s_img=document.createElement("img");s_img.style.cssText="position:absolute;width:"+(w-40).toString()+"px;height:"+(h).toString()+"px;left:20px;";s_img.id="s_img"+key;s_img.src=x[key][y[key]-1];document.getElementById(key).append(s_img);var left = document.createElement("button");left.innerHTML="<";left.id = "slideshow_left"+(c).toString();left.style.cssText="position:absolute;width:20px;height:"+h+"px;left:0px;border-radius: 8px;background-color: "+clr+";";document.getElementById(key).appendChild(left);foo("slideshow_left"+(c).toString(),key);var right = document.createElement("button");right.innerHTML=">";right.id = "slideshow_right"+(c).toString();right.style.cssText="position:absolute;width:20px;height:"+h+"px;right:0px;border-radius: 8px;background-color: "+clr+";";document.getElementById(key).appendChild(right);foo("slideshow_right"+(c).toString(),key);c=c+1;}}</script>;'
+        var part3='<!DOCTYPE html><html lang="en"><head><body style="height: 1000px;background:'+document.getElementById("prev").style.background+'; display:inline-block;">'
         var FileSaver = require('file-saver');
-        var blob = new Blob([part1+part2+final], {type: "text/plain;charset=utf-8"});
-        FileSaver.saveAs(blob, "a1.html");
+        if(Object.keys(this.state.data_ss).length!==0)
+            var blob = new Blob([part1+part2+final], {type: "text/plain;charset=utf-8"});
+        else
+            var blob = new Blob([part3+final], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, document.getElementById("filename").value+".html");
+        
     //        const url = 'http://localhost:5000/download';
     //     fetch(url,{
     //     method: 'POST',
@@ -1189,9 +1242,11 @@ class Edit extends React.Component {
             <input name="example" type="text" id="example" size="50" value="EGTEXT" onfocus="if(this.value=='EGTEXT')this.value=''" onblur="if(this.value=='')this.value='EGTEXT'" />
             <input value="someStandardValue"/> */} 
             <h1 id="demo">Click on elements to edit</h1>
+            
             </div>
             <div id="download">
             <button onClick={this.showAlert} >DOWNLOAD</button>
+            <input id="filename" /> .html
             </div>
             
             </div>

@@ -6,7 +6,7 @@
     left:0px;
     /* background-image: linear-gradient(#ff8a00, #ff74a7);
 background-image: linear-gradient(to right, violet, darkred, purple); */
-    background-image: linear-gradient(40deg, #f2ec4c 50%, #eaff00);
+    background-color: #f2ec4c;
 
 }
 
@@ -21,11 +21,23 @@ background-image: linear-gradient(to right, violet, darkred, purple); */
     /* background-color: rgba(194, 191, 255, 0); */
     background-color: rgb(194, 191, 255);
 }
+/* input {
+    height: 50px;
+    width: 40%;
+  } */
+/* div{
+    text-align: center;
+} */
 input {
     height: 50px;
     width: 40%;
+    box-sizing: border-box;
+    border: none;
+    border: 2px solid rgb(131, 70, 255);
   }
-
+input:focus {
+    border: 2px solid rgb(131, 70, 255);
+  }
 #download{
     position: fixed;
     right: 0px;
@@ -33,4 +45,21 @@ input {
     width: 24.5%;
     height: 10%;
     background-color: rgb(131, 70, 255);
+    font-size: larger;
+}
+#filename{
+    width: 30%;
+    text-align: right;
+    font-size: larger;
+    
+}
+#ci1
+{
+    height: 30px;
+    width: 50%;
+}
+#ci2
+{
+    height: 30px;
+    width: 50%;
 }
