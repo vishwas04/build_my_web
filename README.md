@@ -30,6 +30,7 @@
 
 # HOW DOES THIS WORK ?
 <img src = "/flowchart.png" height="400" width="300" />
+
 # There is an INTERFACE where users can edit the generated HTML page and give the filename before downloading
 
 [DEMO VIDEO](https://www.youtube.com/watch?v=yyLzYmfoxHw)
