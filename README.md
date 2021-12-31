@@ -1,5 +1,5 @@
 # FROM THIS IMAGE 
-<img src = "/test.jpeg" height="48" width="48" />
+<img src = "/test.jpeg" height="400" width="300" />
 
 # To
 [HTML FILE](https://github.com/vishwas04/build_my_web/blob/main/a1-2.html)
@@ -11,19 +11,19 @@
 
 # FEW MORE...
 # FROM THIS IMAGE 
-<img src = "/input/test2.jpeg" height="48" width="48"/>
+<img src = "/input/test2.jpeg" height="400" width="300"/>
 # To
 <img src = "/output/output2.png" />
 
 # FEW MORE...
 # FROM THIS IMAGE 
-<img src = "/input/test3.jpeg" height="48" width="48"/>
+<img src = "/input/test3.jpeg" height="400" width="300"/>
 # To
 <img src = "/output/output3.png" />
 
 # FEW MORE...
 # FROM THIS IMAGE 
-<img src = "/input/p1.jpeg" height="48" width="48" />
+<img src = "/input/p1.jpeg" height="400" width="300" />
 # To
 <img src = "/output/p1.png" />
 
