@@ -10,5 +10,25 @@
 # How it looks like
 <img src = "/output.png" />
 
+#FEW MORE...
+# FROM THIS IMAGE 
+<img src = "/input/test2.jpeg" />
+# To
+<img src = "/output/output2.png" />
+
+#FEW MORE...
+# FROM THIS IMAGE 
+<img src = "/input/test3.jpeg" />
+# To
+<img src = "/output/output3.png" />
+
+#FEW MORE...
+# FROM THIS IMAGE 
+<img src = "/input/p1.jpeg" />
+# To
+<img src = "/output/p1.png" />
+
+
+
 
 [MIT License](/MIT_License)

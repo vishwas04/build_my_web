@@ -85,14 +85,14 @@ class ImageUpload extends React.Component {
     render() {
         return (
             <div>
-                
-            <h1>UPLOAD ALL PICTURES(PAGES) OF YOUR WEB</h1>
+            <style>{'body { background-color: #fff1a1; }'}</style>
+            <h1 id="home_h1">BUILD MY WEB</h1>
             <form action="http://localhost:5000/input" method="post" enctype="multipart/form-data"> 
-                <input type="file"  accept="image/*" name="file" onChange={this.handleImagePreview1}  multiple/>    
-                <img src={this.state.file} alt="display" width="500" height="600"/>
+                <input id="home_file" type="file" className="button-78" accept="image/*" name="file" onChange={this.handleImagePreview1}  multiple/>    
                 <h3   ref={this.setRef}></h3>
-                <input type="button" value="preview" onClick={this.handleImagePreview}/>
-                <button type="submit" >build</button>
+                <button id="home_prev" type="button" className="button-78"  onClick={this.handleImagePreview}>Preview</button>
+                <button id="home_submit" className="button-78" type="submit" >Build</button>
+                <img id="home_img" className="button-62"  src={this.state.file} alt="Upload image -> Preview -> Build" width="500" height="600"/>
             </form> 
             
             </div>

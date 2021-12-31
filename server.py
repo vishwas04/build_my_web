@@ -206,6 +206,7 @@ new_model = tf.keras.models.load_model('model_20.h5', custom_objects={'CTCLayer'
 prediction_model = keras.models.Model(
     new_model.get_layer(name="image").input, new_model.get_layer(name="dense2").output
 )
+
 r={}
 
 @app.route("/")
@@ -249,7 +250,6 @@ def input():
             l = []
             for c1 in contours:
                 # get the bounding rect
-                
                 x, y, w, h = cv2.boundingRect(c1)
                 if(x != 0 and y != 0):
                     flag = True
@@ -258,25 +258,22 @@ def input():
                             flag = False
                     if(flag):
                         if(w>30 and h>30 and w<700 and  h<700 and (w*h > 3000)):
-                            # print((x,y))
                             l.append((x,y))
-                            #print(x,y)
                             #draw a green rectangle to visualize the bounding rect
                             #cv2.rectangle(img, (x+6, y+6), (x+w-6, y+h-6), (0, 255, 0), 2)
                             cropped_img = img[y+5:y+h-5, x+5:x+w-5]
                             #cv2.imshow("contours", img)
-                            
-
-                            
                             dir_name = '('+str(x)+','+str(y)+','+str(w)+','+str(h)+')'
                             path = os.path.join(parent_dir,dir_name)
                             os.mkdir(path)
                             cv2.imwrite(os.path.join(path,'rectangle.jpg'),cropped_img)
+
                             myfunc(dir_name)#segmentation
+
             f,ids=load_images_from_folder("segmentation/src/result/")
             v_test=prepare_dataset(f, ids)
-            # cv2.imshow("contours", img)
-            # r={}
+            
+
             mapp={}
             for batch in v_test.take(1):
                 batch_images = batch["image"]
@@ -355,11 +352,8 @@ def edit():
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
-    # jsonResp = {'jack': 4098, 'sape': 4139}
-    # r=gr.copy()
     global r
     json_dump = json.dumps(r)
-    # print(json_dump)
     r=dict()
     print(json_dump)
     return json_dump
@@ -369,85 +363,3 @@ def edit():
 
 if __name__ == "__main__":
     app.run(debug=True,host='localhost', port=5000)
-
-
-# # @after_this_request
-#     # def add_header(response):
-#     #     response.headers.add('Access-Control-Allow-Origin', '*')
-#     #     return response
-#     # if(request.method=="POST" ):
-#         # f = request.files['img'] 
-#         # print("ooooo") 
-#         # i=request.files["file"]
-#         # i.save("files/"+request.form["pgno"]+".jpg")
-#         # resp = flask.Response.json({"name":"vade"})
-#         # resp.headers['Access-Control-Allow-Origin'] = '*'
-#         # f.save("files/"+str(f.filename))
-#         # return {"s":1}
-#     # for uploaded_file in request.files('file'):
-#     #     if(len(request.files.getlist('file'))):
-#     #         original_image = np.asarray(Image.open(uploaded_file))
-#     #         #if uploaded_file.filename != '':
-#     #         # frame = cv2.imdecode(uploaded_file)
-#     #         img = Image.fromarray(original_image, 'RGB')
-#     #         img.save("files/"+str(original_image.filename))
-#     #         img.show()
-#             # response = uploaded_file.read()
-#     # file = request.files['file']
-#     # original_image = np.asarray(Image.open(file))
-#     # print(original_image)
-#     print(request.files['file'])
-#     # cv2.imshow("str(original_image.filename)", original_image)
-#     # return redirect("http://localhost:3000")
-#     print(json.dumps({'success':True}), 200, {'ContentType':'application/json'} )
-#     resp = jsonify(success=True)
-#     resp.status_code = 200
-#     # print(repr.status_code)
-#     return resp 
-    
-    
-# f = request.files["file"].read()
-    # npimg = np.fromstring(f, np.uint8)
-    # print(npimg)
-    # img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-    # print(img)
-    # dis = Image.fromarray(img, 'RGB')
-    # dis.show()
-    # print("file")
-    # f.save("files/"+str(f.filename))
-    # response = file.read()
-    # resp = jsonify(success=True)
-    # img = Image.fromarray(f.read(), 'RGB')
-    # img.save("files/"+str(f.filename))
-    # img.show()
-
-
-
-# # @app.route("/build")
-# # def index():
-# #     return render_template("build.html")
-#if uploaded_file.filename != '':
-            # frame = cv2.imdecode(uploaded_file)
-            
-# img = Image.fromarray(original_image, 'RGB')
-            # uploaded_file.save("/Users/vishwas/Downloads/segmentation-2/data/test/"+str(uploaded_file.filename))
-            # img.save("/Users/vishwas/Downloads/segmentation-2/data/test/"+str(uploaded_file.filename))
-            # img.show()
-            # image = cv2.imread("/Users/vishwas/Desktop/segment0.png")
-            # print(type(original_image),type(image))
-            # cv2.imshow("a",original_image)
-            # cv2.waitKey(0)   
-
-            #text detection #rnn 0-9
-            #shape detection 
-            #patter detection #nn
-            #postion detection
-            #r=json {["type":"p","pos":30px],["type":"h1","pos":10px,text="hi"]}
-            #html text
-            #s=""
-            #for i in r:
-            #   if(i.type=="p"):
-            #       s=s+"<p>"
-
-            #mongo at random number 10
-            # cv2.imshow(str(uploaded_file.filename),original_image)
